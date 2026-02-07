@@ -11,32 +11,31 @@ export const ValentineCard: React.FC<ValentineCardProps> = ({ onAccept, onReject
   const [noButtonPos, setNoButtonPos] = useState({ x: 0, y: 0 });
   const noButtonRef = useRef<HTMLDivElement>(null);
 
-  // High-quality passionate romantic image
-  const romanticImage = "https://images.unsplash.com/photo-1518199266791-5375a83190b7?auto=format&fit=crop&q=80&w=1000&h=1300";
+  const romanticImages = [
+    "https://images.unsplash.com/photo-1518199266791-5375a83190b7?auto=format&fit=crop&q=80&w=1200&h=800",
+    "https://images.unsplash.com/photo-1516589174184-c68526514282?auto=format&fit=crop&q=80&w=1200&h=800",
+    "https://images.unsplash.com/photo-1513273159397-605658416d7d?auto=format&fit=crop&q=80&w=1200&h=800",
+    "https://images.unsplash.com/photo-1516475429146-36252309c901?auto=format&fit=crop&q=80&w=1200&h=800",
+    "https://images.unsplash.com/photo-1529634806980-85c3dd6d34ac?auto=format&fit=crop&q=80&w=1200&h=800"
+  ];
+
+  const [currentImage] = useState(() => romanticImages[Math.floor(Math.random() * romanticImages.length)]);
 
   const moveButton = useCallback(() => {
-    // Generate a random position within a reasonable range to keep it on screen
     const rangeX = window.innerWidth > 768 ? 200 : 120;
     const rangeY = 150;
-    
-    // Ensure it moves a significant distance from its current spot
     let newX = (Math.random() - 0.5) * rangeX * 2;
     let newY = (Math.random() - 0.5) * rangeY * 2;
-    
     setNoButtonPos({ x: newX, y: newY });
   }, []);
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
       if (!noButtonRef.current) return;
-      
       const rect = noButtonRef.current.getBoundingClientRect();
       const buttonCenterX = rect.left + rect.width / 2;
       const buttonCenterY = rect.top + rect.height / 2;
-      
       const distance = Math.hypot(e.clientX - buttonCenterX, e.clientY - buttonCenterY);
-      
-      // Only move if the cursor is trying to click (very close)
       if (distance < 90) {
         moveButton();
       }
@@ -50,7 +49,7 @@ export const ValentineCard: React.FC<ValentineCardProps> = ({ onAccept, onReject
     <div className="glass rounded-[3rem] p-6 md:p-10 text-center border border-white/50 shadow-2xl w-full max-w-[460px] min-h-[680px] flex flex-col items-center justify-between space-y-6">
       <div className="relative w-full h-80 md:h-96 overflow-hidden rounded-[2.5rem] shadow-xl border border-white/40 flex-shrink-0">
         <img
-          src={romanticImage}
+          src={currentImage}
           alt="Deeply Romantic Connection"
           className="w-full h-full object-cover transition-transform duration-1000 hover:scale-110"
         />
@@ -61,13 +60,11 @@ export const ValentineCard: React.FC<ValentineCardProps> = ({ onAccept, onReject
 
       <div className="flex-grow flex flex-col justify-center space-y-4 px-2">
         <h1 className="text-5xl md:text-6xl font-romantic text-rose-700 drop-shadow-sm leading-tight">
-          Hey Gorgeous...
+          Hey Honey...
         </h1>
-        
         <p className="text-lg md:text-xl text-rose-900 font-serif-elegant italic leading-relaxed">
           "Every moment with you is a dream I never want to wake up from."
         </p>
-
         <h2 className="text-2xl md:text-3xl font-serif-elegant font-bold text-rose-800 flex items-center justify-center gap-3 mt-4">
           <Heart className="w-7 h-7 fill-rose-600 text-rose-600 animate-pulse" />
           Be my Valentine?
