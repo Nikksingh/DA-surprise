@@ -48,7 +48,7 @@ export const ValentineCard: React.FC<ValentineCardProps> = ({ onAccept, onReject
           alt="Funny Confused Expression"
           className="w-full h-full object-cover transition-transform duration-1000 hover:scale-110"
           onError={(e) => {
-            e.currentTarget.src = "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&q=80&w=800";
+            e.currentTarget.src = "https://images.unsplash.com/photo-1541364983171-a8ba01e95cfc?auto=format&fit=crop&q=80&w=800";
           }}
         />
         <div className="absolute inset-0 bg-gradient-to-t from-rose-900/40 via-transparent to-transparent flex items-end justify-center pb-8">
