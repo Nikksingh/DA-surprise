@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { Heart, Sparkles } from 'lucide-react';
 
@@ -11,15 +10,13 @@ export const ValentineCard: React.FC<ValentineCardProps> = ({ onAccept, onReject
   const [noButtonPos, setNoButtonPos] = useState({ x: 0, y: 0 });
   const noButtonRef = useRef<HTMLDivElement>(null);
 
-  const romanticImages = [
-    "https://images.unsplash.com/photo-1518199266791-5375a83190b7?auto=format&fit=crop&q=80&w=1200&h=800",
-    "https://images.unsplash.com/photo-1516589174184-c68526514282?auto=format&fit=crop&q=80&w=1200&h=800",
-    "https://images.unsplash.com/photo-1513273159397-605658416d7d?auto=format&fit=crop&q=80&w=1200&h=800",
-    "https://images.unsplash.com/photo-1516475429146-36252309c901?auto=format&fit=crop&q=80&w=1200&h=800",
-    "https://images.unsplash.com/photo-1529634806980-85c3dd6d34ac?auto=format&fit=crop&q=80&w=1200&h=800"
+  const confusedImages = [
+    "https://images.unsplash.com/photo-1543807535-eceef0bc6599?auto=format&fit=crop&q=80&w=800",
+    "https://images.unsplash.com/photo-1541364983171-a8ba01e95cfc?auto=format&fit=crop&q=80&w=800",
+    "https://images.unsplash.com/photo-1584940120743-8981ca35b011?auto=format&fit=crop&q=80&w=800"
   ];
 
-  const [currentImage] = useState(() => romanticImages[Math.floor(Math.random() * romanticImages.length)]);
+  const [currentImage] = useState(() => confusedImages[Math.floor(Math.random() * confusedImages.length)]);
 
   const moveButton = useCallback(() => {
     const rangeX = window.innerWidth > 768 ? 200 : 120;
@@ -47,14 +44,17 @@ export const ValentineCard: React.FC<ValentineCardProps> = ({ onAccept, onReject
 
   return (
     <div className="glass rounded-[3rem] p-6 md:p-10 text-center border border-white/50 shadow-2xl w-full max-w-[460px] min-h-[680px] flex flex-col items-center justify-between space-y-6">
-      <div className="relative w-full h-80 md:h-96 overflow-hidden rounded-[2.5rem] shadow-xl border border-white/40 flex-shrink-0">
+      <div className="relative w-full h-80 md:h-96 overflow-hidden rounded-[2.5rem] shadow-xl border border-white/40 flex-shrink-0 bg-rose-50">
         <img
           src={currentImage}
-          alt="Deeply Romantic Connection"
+          alt="Funny Confused Expression"
           className="w-full h-full object-cover transition-transform duration-1000 hover:scale-110"
+          onError={(e) => {
+            e.currentTarget.src = "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&q=80&w=800";
+          }}
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-rose-900/70 via-transparent to-transparent flex items-end justify-center pb-8">
-          <p className="text-white text-2xl font-romantic tracking-[0.2em] drop-shadow-lg">Captured in your love...</p>
+        <div className="absolute inset-0 bg-gradient-to-t from-rose-900/40 via-transparent to-transparent flex items-end justify-center pb-8">
+          <p className="text-white text-2xl font-romantic tracking-[0.2em] drop-shadow-lg">Wait... what?</p>
         </div>
       </div>
 
@@ -63,11 +63,11 @@ export const ValentineCard: React.FC<ValentineCardProps> = ({ onAccept, onReject
           Hey Honey...
         </h1>
         <p className="text-lg md:text-xl text-rose-900 font-serif-elegant italic leading-relaxed">
-          "Every moment with you is a dream I never want to wake up from."
+          "Are you really sure about this?"
         </p>
         <h2 className="text-2xl md:text-3xl font-serif-elegant font-bold text-rose-800 flex items-center justify-center gap-3 mt-4">
           <Heart className="w-7 h-7 fill-rose-600 text-rose-600 animate-pulse" />
-          Be my Valentine?
+          Will you be my Valentine?
           <Heart className="w-7 h-7 fill-rose-600 text-rose-600 animate-pulse" />
         </h2>
       </div>
