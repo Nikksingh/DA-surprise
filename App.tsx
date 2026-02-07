@@ -21,7 +21,7 @@ const App: React.FC = () => {
 
   return (
     <div className="h-full w-full relative overflow-hidden flex items-center justify-center bg-transparent">
-      {/* Background Music */}
+      {/* Background Music - Relaxing Romantic */}
       <audio 
         ref={audioRef} 
         src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" 
@@ -33,7 +33,7 @@ const App: React.FC = () => {
 
       {/* Main Content layer */}
       <main className="relative z-10 w-full h-full flex items-center justify-center p-4">
-        <div className="w-full max-w-[480px] floating-card heart-melt flex items-center justify-center">
+        <div className="w-full max-w-[500px] flex items-center justify-center heart-melt floating-card">
           {view === 'question' && (
             <ValentineCard onAccept={handleAccept} onReject={handleReject} />
           )}
@@ -47,8 +47,8 @@ const App: React.FC = () => {
       </main>
 
       {/* Decorative footer text */}
-      <div className="fixed bottom-6 right-8 items-center gap-2 text-white/60 font-romantic text-2xl select-none hidden md:flex pointer-events-none drop-shadow-md">
-        Forever & Always Yours ❤️
+      <div className="fixed bottom-8 right-10 items-center gap-3 text-white/70 font-romantic text-3xl select-none hidden lg:flex pointer-events-none drop-shadow-lg">
+        Yours Forever ❤️
       </div>
     </div>
   );
