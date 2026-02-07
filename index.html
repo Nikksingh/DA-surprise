@@ -6,10 +6,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>A Special Question for You</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Babel Standalone: Essential for running TSX files directly in the browser -->
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
   <style>
+    @keyframes romantic-pulse {
+      0% { background-color: #f43f5e; } /* Vibrant Rose Red */
+      50% { background-color: #fff5f5; } /* Soft Light Pink */
+      100% { background-color: #f43f5e; }
+    }
+
     html, body {
       margin: 0;
       padding: 0;
@@ -17,15 +25,22 @@
       height: 100%;
       overflow: hidden;
       font-family: 'Montserrat', sans-serif;
-      background: radial-gradient(circle at center, #fff5f5 0%, #ffe4e6 100%);
+      animation: romantic-pulse 8s ease-in-out infinite;
+      transition: background-color 2s ease-in-out;
     }
+
     #root {
       width: 100%;
       height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
+
     .font-romantic {
       font-family: 'Great Vibes', cursive;
     }
+
     .font-serif-elegant {
       font-family: 'Playfair Display', serif;
     }
@@ -49,28 +64,38 @@
     }
 
     .glass {
-      background: rgba(255, 255, 255, 0.75);
+      background: rgba(255, 255, 255, 0.85);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
       border: 1px solid rgba(255, 255, 255, 0.5);
-      box-shadow: 0 12px 40px 0 rgba(225, 29, 72, 0.08);
+      box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.1);
     }
   </style>
 <script type="importmap">
 {
   "imports": {
-    "react/": "https://esm.sh/react@^19.2.4/",
     "react": "https://esm.sh/react@^19.2.4",
+    "react-dom": "https://esm.sh/react-dom@^19.2.4",
+    "react-dom/client": "https://esm.sh/react-dom@^19.2.4/client",
     "lucide-react": "https://esm.sh/lucide-react@^0.563.0",
+    "canvas-confetti": "https://esm.sh/canvas-confetti@^1.9.4",
     "react-dom/": "https://esm.sh/react-dom@^19.2.4/",
-    "canvas-confetti": "https://esm.sh/canvas-confetti@^1.9.4"
+    "react/": "https://esm.sh/react@^19.2.4/"
   }
 }
 </script>
 </head>
-<body class="bg-rose-50">
+<body>
   <div id="root"></div>
-  <!-- CRITICAL: This script tag was missing, which is why the page was blank -->
-  <script type="module" src="./index.tsx"></script>
+  
+  <script type="text/babel" data-type="module">
+    import React from 'react';
+    import { createRoot } from 'react-dom/client';
+    import App from './App.tsx';
+
+    const container = document.getElementById('root');
+    const root = createRoot(container);
+    root.render(<App />);
+  </script>
 </body>
 </html>
