@@ -6,16 +6,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>A Special Question for You</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Babel Standalone for direct TSX support in browser -->
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
   <style>
     @keyframes romantic-pulse {
-      0% { background-color: #be123c; } /* Deep Rose Red */
+      0% { background-color: #e11d48; } /* Vibrant Rose Red */
       50% { background-color: #fff1f2; } /* Soft Blush Pink */
-      100% { background-color: #be123c; }
+      100% { background-color: #e11d48; }
     }
 
     html, body {
@@ -25,7 +24,7 @@
       height: 100%;
       overflow: hidden;
       font-family: 'Montserrat', sans-serif;
-      animation: romantic-pulse 10s ease-in-out infinite;
+      animation: romantic-pulse 8s ease-in-out infinite;
     }
 
     #root {
@@ -36,48 +35,45 @@
       justify-content: center;
     }
 
-    .font-romantic {
-      font-family: 'Great Vibes', cursive;
-    }
-
-    .font-serif-elegant {
-      font-family: 'Playfair Display', serif;
-    }
+    .font-romantic { font-family: 'Great Vibes', cursive; }
+    .font-serif-elegant { font-family: 'Playfair Display', serif; }
     
     @keyframes float {
       0%, 100% { transform: translateY(0px) rotate(0deg); }
       50% { transform: translateY(-15px) rotate(1deg); }
     }
     
-    .heart-melt {
-      animation: heartMelt 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-    }
+    .floating-card { animation: float 6s ease-in-out infinite; }
 
     @keyframes heartMelt {
       0% { transform: scale(0.9); opacity: 0; filter: blur(10px); }
       100% { transform: scale(1); opacity: 1; filter: blur(0px); }
     }
 
-    .floating-card {
-      animation: float 6s ease-in-out infinite;
-    }
+    .heart-melt { animation: heartMelt 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
 
     .glass {
       background: rgba(255, 255, 255, 0.75);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
       border: 1px solid rgba(255, 255, 255, 0.4);
-      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.2);
     }
+
+    @keyframes drift {
+      0% { transform: translateY(110vh) rotate(0deg); }
+      100% { transform: translateY(-10vh) rotate(360deg); }
+    }
+    .heart-particle { animation: drift linear infinite; }
   </style>
   <script type="importmap">
 {
   "imports": {
-    "react": "https://esm.sh/react@^19.2.4",
-    "react-dom": "https://esm.sh/react-dom@^19.2.4",
-    "react-dom/client": "https://esm.sh/react-dom@^19.2.4/client",
-    "lucide-react": "https://esm.sh/lucide-react@^0.475.0",
-    "canvas-confetti": "https://esm.sh/canvas-confetti@^1.9.3",
+    "react": "https://esm.sh/react@19.0.0",
+    "react-dom": "https://esm.sh/react-dom@19.0.0",
+    "react-dom/client": "https://esm.sh/react-dom@19.0.0/client",
+    "lucide-react": "https://esm.sh/lucide-react@0.475.0",
+    "canvas-confetti": "https://esm.sh/canvas-confetti@1.9.3",
     "react-dom/": "https://esm.sh/react-dom@^19.2.4/",
     "react/": "https://esm.sh/react@^19.2.4/"
   }
@@ -85,20 +81,138 @@
 </script>
 </head>
 <body>
-  <div id="root">
-    <div style="font-family: 'Great Vibes', cursive; color: white; font-size: 2rem; opacity: 0.8;">Loading Love...</div>
-  </div>
+  <div id="root"></div>
   
-  <script type="text/babel" data-type="module" data-presets="react,typescript">
-    import React from 'react';
+  <script type="text/babel" data-presets="react,typescript">
+    import React, { useState, useRef, useEffect, useCallback } from 'react';
     import { createRoot } from 'react-dom/client';
-    import App from './App.tsx';
+    import { Heart, Sparkles, Stars, CloudRain, Frown, RotateCcw } from 'lucide-react';
+    import confetti from 'canvas-confetti';
+
+    // --- Components ---
+
+    const FloatingHearts = () => {
+      const [hearts, setHearts] = useState([]);
+      useEffect(() => {
+        setHearts(Array.from({ length: 20 }).map((_, i) => ({
+          id: i,
+          x: Math.random() * 100,
+          size: Math.random() * 25 + 15,
+          duration: Math.random() * 7 + 8,
+          delay: Math.random() * 5,
+          opacity: Math.random() * 0.3 + 0.1,
+        })));
+      }, []);
+      return (
+        <div className="fixed inset-0 pointer-events-none z-0">
+          {hearts.map((h) => (
+            <div key={h.id} className="heart-particle absolute bottom-0" style={{ left: `${h.x}%`, width: `${h.size}px`, height: `${h.size}px`, animationDuration: `${h.duration}s`, animationDelay: `${h.delay}s`, opacity: h.opacity }}>
+              <svg fill="currentColor" viewBox="0 0 24 24" className="text-rose-400 w-full h-full"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" /></svg>
+            </div>
+          ))}
+        </div>
+      );
+    };
+
+    const ValentineCard = ({ onAccept }) => {
+      const [noButtonPos, setNoButtonPos] = useState({ x: 0, y: 0 });
+      const noButtonRef = useRef(null);
+      const romanticImage = "https://images.unsplash.com/photo-1516589174184-c68526514282?q=80&w=1000&auto=format&fit=crop";
+
+      const moveButton = useCallback(() => {
+        const range = window.innerWidth > 768 ? 200 : 120;
+        setNoButtonPos({
+          x: (Math.random() - 0.5) * range * 2.5,
+          y: (Math.random() - 0.5) * range * 1.5
+        });
+      }, []);
+
+      useEffect(() => {
+        const handleMove = (e) => {
+          if (!noButtonRef.current) return;
+          const rect = noButtonRef.current.getBoundingClientRect();
+          const dist = Math.hypot(e.clientX - (rect.left + rect.width/2), e.clientY - (rect.top + rect.height/2));
+          if (dist < 80) moveButton();
+        };
+        window.addEventListener('mousemove', handleMove);
+        return () => window.removeEventListener('mousemove', handleMove);
+      }, [moveButton]);
+
+      return (
+        <div className="glass rounded-[3rem] p-6 md:p-10 text-center w-full max-w-[460px] min-h-[680px] flex flex-col items-center justify-between space-y-6">
+          <div className="relative w-full h-80 md:h-96 overflow-hidden rounded-[2.5rem] shadow-xl border border-white/40">
+            <img src={romanticImage} className="w-full h-full object-cover transition-transform duration-1000 hover:scale-105" />
+            <div className="absolute inset-0 bg-gradient-to-t from-rose-900/60 to-transparent flex items-end justify-center pb-8">
+              <p className="text-white text-2xl font-romantic tracking-[0.2em] drop-shadow-lg">Forever in my heart...</p>
+            </div>
+          </div>
+          <div className="flex-grow flex flex-col justify-center space-y-4">
+            <h1 className="text-5xl md:text-6xl font-romantic text-rose-700 leading-tight">My Dearest...</h1>
+            <p className="text-lg md:text-xl text-rose-900 font-serif-elegant italic leading-relaxed">"You are the light of my life, my soulmate, and my everything."</p>
+            <h2 className="text-2xl md:text-3xl font-serif-elegant font-bold text-rose-800 flex items-center justify-center gap-3 mt-4">
+              <Heart className="w-7 h-7 fill-rose-600 text-rose-600 animate-pulse" />
+              Be my Valentine?
+              <Heart className="w-7 h-7 fill-rose-600 text-rose-600 animate-pulse" />
+            </h2>
+          </div>
+          <div className="w-full flex flex-row items-center justify-center gap-6 md:gap-12 h-24 relative mt-4">
+            <button onClick={onAccept} className="px-12 md:px-16 py-4 bg-gradient-to-r from-rose-600 to-pink-600 text-white rounded-full text-2xl font-bold shadow-xl hover:scale-110 transition-all z-20">
+              YES! <Sparkles className="inline w-6 h-6 ml-2" />
+            </button>
+            <div ref={noButtonRef} style={{ transform: `translate(${noButtonPos.x}px, ${noButtonPos.y}px)`, transition: 'transform 0.2s cubic-bezier(0.17, 0.67, 0.83, 0.67)' }} onMouseEnter={moveButton}>
+              <button className="px-10 py-3 bg-white/40 text-rose-400 rounded-full text-xl font-medium border border-rose-200 backdrop-blur-md cursor-default pointer-events-none md:pointer-events-auto">No</button>
+            </div>
+          </div>
+        </div>
+      );
+    };
+
+    const SuccessView = () => {
+      useEffect(() => {
+        const duration = 5 * 1000;
+        const animationEnd = Date.now() + duration;
+        const frame = () => {
+          confetti({ particleCount: 3, angle: 60, spread: 55, origin: { x: 0 }, colors: ['#e11d48', '#ffffff'] });
+          confetti({ particleCount: 3, angle: 120, spread: 55, origin: { x: 1 }, colors: ['#fb7185', '#ffffff'] });
+          if (Date.now() < animationEnd) requestAnimationFrame(frame);
+        };
+        frame();
+      }, []);
+      return (
+        <div className="glass rounded-[3.5rem] p-8 text-center w-full max-w-[460px] min-h-[580px] flex flex-col items-center justify-center space-y-6 heart-melt">
+          <Heart className="w-16 h-16 text-rose-600 fill-rose-600 animate-bounce" />
+          <h1 className="text-5xl md:text-6xl font-romantic text-rose-600">Yay! I'm so happy!</h1>
+          <p className="text-xl font-serif-elegant text-rose-800 italic">"I promise to love you and cherish you every single day."</p>
+          <div className="relative w-full aspect-video overflow-hidden rounded-[2rem] shadow-xl border-4 border-white/80">
+            <img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&q=80&w=800" className="w-full h-full object-cover" />
+          </div>
+          <div className="bg-rose-50/80 py-4 px-8 rounded-full border border-rose-100 shadow-sm">
+            <p className="text-3xl text-rose-600 font-romantic tracking-widest">Forever Yours ❤️</p>
+          </div>
+        </div>
+      );
+    };
+
+    const App = () => {
+      const [view, setView] = useState('question');
+      const handleAccept = () => setView('accepted');
+
+      return (
+        <div className="h-full w-full relative overflow-hidden flex items-center justify-center">
+          <FloatingHearts />
+          <main className="relative z-10 w-full h-full flex items-center justify-center p-4">
+            <div className="w-full max-w-[500px] flex items-center justify-center heart-melt floating-card">
+              {view === 'question' ? <ValentineCard onAccept={handleAccept} /> : <SuccessView />}
+            </div>
+          </main>
+          <div className="fixed bottom-8 right-10 text-white/70 font-romantic text-3xl hidden lg:block drop-shadow-lg pointer-events-none">Love You Always ❤️</div>
+        </div>
+      );
+    };
 
     const container = document.getElementById('root');
-    if (container) {
-      const root = createRoot(container);
-      root.render(<App />);
-    }
+    const root = createRoot(container);
+    root.render(<App />);
   </script>
 </body>
 </html>
