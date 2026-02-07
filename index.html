@@ -6,16 +6,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>A Special Question for You</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Babel Standalone: Essential for running TSX files directly in the browser -->
+  <!-- Babel Standalone for direct TSX support -->
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
   <style>
     @keyframes romantic-pulse {
-      0% { background-color: #f43f5e; } /* Vibrant Rose Red */
-      50% { background-color: #fff5f5; } /* Soft Light Pink */
-      100% { background-color: #f43f5e; }
+      0% { background-color: #dc2626; } /* Vibrant Red (Tailwind Red-600) */
+      50% { background-color: #fff1f2; } /* Very Light Pink (Tailwind Rose-50) */
+      100% { background-color: #dc2626; }
     }
 
     html, body {
@@ -25,8 +25,7 @@
       height: 100%;
       overflow: hidden;
       font-family: 'Montserrat', sans-serif;
-      animation: romantic-pulse 8s ease-in-out infinite;
-      transition: background-color 2s ease-in-out;
+      animation: romantic-pulse 10s ease-in-out infinite;
     }
 
     #root {
@@ -47,7 +46,7 @@
     
     @keyframes float {
       0%, 100% { transform: translateY(0px) rotate(0deg); }
-      50% { transform: translateY(-10px) rotate(0.5deg); }
+      50% { transform: translateY(-15px) rotate(1deg); }
     }
     
     @keyframes heartMelt {
@@ -60,15 +59,15 @@
     }
 
     .floating-card {
-      animation: float 5s ease-in-out infinite;
+      animation: float 6s ease-in-out infinite;
     }
 
     .glass {
-      background: rgba(255, 255, 255, 0.85);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border: 1px solid rgba(255, 255, 255, 0.5);
-      box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.1);
+      background: rgba(255, 255, 255, 0.7); /* More transparent to see background */
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
     }
   </style>
 <script type="importmap">
@@ -88,14 +87,17 @@
 <body>
   <div id="root"></div>
   
-  <script type="text/babel" data-type="module">
+  <!-- Use data-presets to ensure TSX and React are handled correctly -->
+  <script type="text/babel" data-type="module" data-presets="react,typescript">
     import React from 'react';
     import { createRoot } from 'react-dom/client';
     import App from './App.tsx';
 
     const container = document.getElementById('root');
-    const root = createRoot(container);
-    root.render(<App />);
+    if (container) {
+      const root = createRoot(container);
+      root.render(<App />);
+    }
   </script>
 </body>
 </html>

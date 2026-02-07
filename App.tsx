@@ -1,9 +1,9 @@
 
 import React, { useState, useRef } from 'react';
-import { FloatingHearts } from './components/FloatingHearts';
-import { ValentineCard } from './components/ValentineCard';
-import { SuccessView } from './components/SuccessView';
-import { SadView } from './components/SadView';
+import { FloatingHearts } from './components/FloatingHearts.tsx';
+import { ValentineCard } from './components/ValentineCard.tsx';
+import { SuccessView } from './components/SuccessView.tsx';
+import { SadView } from './components/SadView.tsx';
 
 const App: React.FC = () => {
   const [view, setView] = useState<'question' | 'accepted' | 'rejected'>('question');
@@ -20,7 +20,7 @@ const App: React.FC = () => {
   const handleRetry = () => setView('question');
 
   return (
-    <div className="h-screen w-screen relative overflow-hidden flex items-center justify-center selection:bg-rose-200">
+    <div className="h-full w-full relative overflow-hidden flex items-center justify-center bg-transparent">
       {/* Background Music */}
       <audio 
         ref={audioRef} 
@@ -33,7 +33,7 @@ const App: React.FC = () => {
 
       {/* Main Content layer */}
       <main className="relative z-10 w-full h-full flex items-center justify-center p-4">
-        <div className="w-full max-w-[450px] floating-card heart-melt flex items-center justify-center">
+        <div className="w-full max-w-[480px] floating-card heart-melt flex items-center justify-center">
           {view === 'question' && (
             <ValentineCard onAccept={handleAccept} onReject={handleReject} />
           )}
@@ -47,7 +47,7 @@ const App: React.FC = () => {
       </main>
 
       {/* Decorative footer text */}
-      <div className="fixed bottom-6 right-8 items-center gap-2 text-rose-500/40 font-romantic text-2xl select-none hidden md:flex pointer-events-none">
+      <div className="fixed bottom-6 right-8 items-center gap-2 text-white/60 font-romantic text-2xl select-none hidden md:flex pointer-events-none drop-shadow-md">
         Forever & Always Yours ❤️
       </div>
     </div>
